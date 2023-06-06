@@ -7,6 +7,8 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Admin;
+use App\Models\Product;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -29,11 +31,19 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request)
     {
         $request->authenticate();
-
+    
         $request->session()->regenerate();
-
-        return redirect()->intended(RouteServiceProvider::HOME);
+    
+        $user = Auth::user();
+    
+        if ($user->admin) {
+            return redirect()->route('admin');
+        } else {
+            return redirect()->route('dashboard');
+        }
     }
+    
+
 
     /**
      * Destroy an authenticated session.

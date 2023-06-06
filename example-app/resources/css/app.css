@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
+.btn {
+    @apply ml-4;
+}
 @tailwind utilities;
+
+/* Customize the "Send Code" button */

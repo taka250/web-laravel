@@ -8,9 +8,25 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\MailController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductController;
+use App\Models\Product;
+use App\Http\Controllers\DeleteOrderController;
+use App\Http\Controllers\BuyController;
+use App\Http\Controllers\AdminController;
+// 使用 POST 请求将 /delete_2 路由映射到 DeleteOrderController 的 deleteOrder 方法
+use Illuminate\Http\Request;
+use App\Models\Order;
 
 Route::middleware('guest')->group(function () {
+
+
+    
+
+
+    Route::any('mail',[MailController::class,'sendMail']);
+
     Route::get('register', [RegisteredUserController::class, 'create'])
                 ->name('register');
 
@@ -35,6 +51,24 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+
+
+
+
+
+ Route::post('/buy', [BuyController::class, 'buy']);
+    
+    Route::post('/delete', [ProductController::class, 'deleteProduct'])->name('delete.product');
+
+Route::post('/delete_2', [DeleteOrderController::class, 'deleteOrder'])->name('deleteOrder');
+
+  Route::post('/add', [ProductController::class, 'addToCart'])->name('add.to.cart');
+
+
+
+ 
+
+  Route::get('/admin', [AdminController::class, 'admin'])->middleware(['auth', 'verified'])->name('admin');
     Route::get('verify-email', [EmailVerificationPromptController::class, '__invoke'])
                 ->name('verification.notice');
 
